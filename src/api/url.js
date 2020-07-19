@@ -15,4 +15,10 @@ getData.userlist = (params)=>{
     })
 }
 
+getData.menulist = (params)=>{
+    return http.get('/menus',{
+        params
+    })
+}
+
 export default getData
