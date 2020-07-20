@@ -21,4 +21,8 @@ getData.menulist = (params)=>{
     })
 }
 
+getData.adduser = (data)=>{
+    return http.post('/users', data)
+}
+
 export default getData

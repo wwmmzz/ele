@@ -8,7 +8,8 @@
       <el-container>
         <!-- 侧边栏 -->
         <el-aside width="200px">
-          <el-menu background-color="#333744" text-color="#fff" active-text-color="#409eff" router>
+          <el-menu background-color="#333744" text-color="#fff" active-text-color="#409eff"
+          :default-active = "activeRoute" router>
             <!-- 一级菜单 -->
             <el-submenu v-for="item1 in menuList" :key="item1.id" :index="item1.path+''">
               <template slot="title">
@@ -17,7 +18,7 @@
               </template>
               <!-- 二级菜单 -->
               <el-menu-item v-for="item2 in item1.children" 
-                :key="item2.id" :index="'/'+ item2.path">
+                :key="item2.id" :index="'/'+ item2.path" @click="routeStatus('/'+item2.path)">
                 <template slot="title">
                   <i class="el-icon-location"></i>
                   <span>{{item2.authName}}</span>
@@ -41,23 +42,16 @@ import getData from "@/api/url";
 export default {
   data() {
     return {
-      userlist: {
-        pagenum: 1,
-        pagesize: 4
-      },
-      menuList:[]
+      menuList:[],
+      activeRoute: ''
     };
   },
   mounted() {
     this.getMenuList();
-    this.getUserlist();
+    this.activeRoute = window.sessionStorage.getItem("router")
+    console.log(this.activeRoute)
   },
   methods: {
-    getUserlist() {
-      getData.userlist(this.userlist).then(res => {
-        console.log(res);
-      });
-    },
     logout() {
       window.sessionStorage.clear();
       this.$router.push("/login");
@@ -71,6 +65,10 @@ export default {
             this.$message.error("获取列表失败")
         }
 
+    },
+    routeStatus(router){
+        window.sessionStorage.setItem("router", router)
+        this.activeRoute = router
     }
   }
 };
@@ -87,6 +85,10 @@ export default {
 .home {
   display: flex;
   height: 100%;
+}
+
+.home{
+    min-width: 1366px;
 }
 
 .header-left {
